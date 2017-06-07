@@ -1,0 +1,29 @@
+{
+  "name": "sqltomango",
+  "version": "1.0.0",
+  "description": "Converts SQL statements into CouchDB Mango (Cloudant Query) JSON queries",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/glynnbird/sqltomango.git"
+  },
+  "keywords": [
+    "cloudant",
+    "couchdb",
+    "mango",
+    "query",
+    "sql"
+  ],
+  "author": "Glynn Bird <glynn.bird@gmail.com>",
+  "license": "Apache-2.0",
+  "bugs": {
+    "url": "https://github.com/glynnbird/sqltomango/issues"
+  },
+  "homepage": "https://github.com/glynnbird/sqltomango#readme",
+  "dependencies": {
+    "sql-parser": "^0.5.0"
+  }
+}
