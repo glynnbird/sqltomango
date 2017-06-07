@@ -20,7 +20,7 @@ describe('parsing tests', function() {
 
   it('should handle SELECT *', function() {
     var q = sqltomango("SELECT * FROM mytable");
-    assert.deepEqual(q, { fields: null });
+    assert.deepEqual(q, { });
   });
 
   it('should handle WHERE =', function() {

@@ -84,9 +84,7 @@ const parse = function(query) {
   }
 
   // empty cloudant query object
-  var obj = {
-    fields: null
-  };
+  var obj = { };
 
   // parse the SQL into a tree
   const tree = sqlparser.parse(query);
@@ -123,9 +121,7 @@ const parse = function(query) {
       obj.fields.push(simplify(field.field))
       
     }
-  } else {
-    obj.fields = null;
-  }
+  } 
 
   // extract where clauses by recursively walking the tree
   if (tree.where) {

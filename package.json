@@ -1,6 +1,6 @@
 {
   "name": "sqltomango",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Converts SQL statements into CouchDB Mango (Cloudant Query) JSON queries",
   "main": "index.js",
   "scripts": {
