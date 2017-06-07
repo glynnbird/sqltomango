@@ -12,6 +12,29 @@ const simplify = function(obj) {
   return str;
 };
 
+// simplifies and then tries to infer types from the data for value parameters in the WHERE clause
+// e.g. "2.5" --> 2.5
+//       "2"  --> 2
+//      "true" --> true etc
+const parameterise = function(obj) {
+  var str = simplify(obj);
+  var u = str.toUpperCase();
+
+  // if the thing is numeric, parse as number
+  if (str.match(/^[\-0-9\.]+$/)) {
+    if (str.match(/\./)) {
+      return parseFloat(str);
+    } else {
+      return parseInt(str);
+    }
+  } else if (u === 'TRUE') {
+    return true;
+  } else if (u === 'FALSE') {
+    return false;
+  } else {
+    return str;
+  }
+};
 
 // recursive function that dives into the tree of parsed WHERE clauses and creates
 // the equivalent selector. The selector function calls itself as it meets operators
@@ -22,27 +45,27 @@ const selector = function(s, condition) {
 
   switch (condition.operation.toUpperCase()) {
     case '=':
-      s[simplify(condition.left)] = { '$eq' : simplify(condition.right) };
+      s[simplify(condition.left)] = { '$eq' : parameterise(condition.right) };
     break;
 
     case '!=':
-      s[simplify(condition.left)] = { '$ne' : simplify(condition.right) };
+      s[simplify(condition.left)] = { '$ne' : parameterise(condition.right) };
     break;
 
     case '<':
-      s[simplify(condition.left)] = { '$lt' : simplify(condition.right) };
+      s[simplify(condition.left)] = { '$lt' : parameterise(condition.right) };
     break;
 
     case '<=':
-      s[simplify(condition.left)] = { '$lte' : simplify(condition.right) };
+      s[simplify(condition.left)] = { '$lte' : parameterise(condition.right) };
     break;
 
     case '>':
-      s[simplify(condition.left)] = { '$gt' : simplify(condition.right) };
+      s[simplify(condition.left)] = { '$gt' : parameterise(condition.right) };
     break;
 
     case '>=':
-      s[simplify(condition.left)] = { '$gte' : simplify(condition.right) };
+      s[simplify(condition.left)] = { '$gte' : parameterise(condition.right) };
     break;
 
     case 'IN':
@@ -55,16 +78,16 @@ const selector = function(s, condition) {
 
     case 'AND':
       var op = '$and';
-      s[op] = {};
-      selector(s[op], condition.left);
-      selector(s[op], condition.right);      
+      s[op] = [];
+      s[op].push(selector({}, condition.left));
+      s[op].push(selector({}, condition.right));      
     break;
 
     case 'OR':
       var op = '$or';
-      s[op] = {};
-      selector(s[op], condition.left);
-      selector(s[op], condition.right);      
+      s[op] = [];
+      s[op].push(selector({}, condition.left));
+      s[op].push(selector({}, condition.right));      
     break;
 
     default: 

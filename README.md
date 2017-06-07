@@ -50,19 +50,27 @@ var q = sqltomango("SELECT _id, age, breed FROM dogs WHERE owner = 'glynn' OR (n
   "breed"
  ],
  "selector": {
-  "$or": {
-   "owner": {
-    "$eq": "glynn"
-   },
-   "$and": {
-    "name": {
-     "$eq": "towser"
-    },
-    "colour": {
-     "$eq": "white"
+  "$or": [
+   {
+    "owner": {
+     "$eq": "glynn"
     }
+   },
+   {
+    "$and": [
+     {
+      "name": {
+       "$eq": "towser"
+      }
+     },
+     {
+      "colour": {
+       "$eq": "white"
+      }
+     }
+    ]
    }
-  }
+  ]
  },
  "sort": [
   {

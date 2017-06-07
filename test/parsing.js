@@ -24,8 +24,23 @@ describe('parsing tests', function() {
   });
 
   it('should handle WHERE =', function() {
+    var q = sqltomango("SELECT a,b,c FROM mytable WHERE d='dog'");
+    assert.deepEqual(q, { fields: ['a','b','c'], selector: { d: {'$eq': 'dog'}} });
+  });
+
+  it('should handle integers', function() {
     var q = sqltomango("SELECT a,b,c FROM mytable WHERE d='1'");
-    assert.deepEqual(q, { fields: ['a','b','c'], selector: { d: {'$eq': '1'}} });
+    assert.deepEqual(q, { fields: ['a','b','c'], selector: { d: {'$eq': 1}} });
+  });
+
+  it('should handle floats', function() {
+    var q = sqltomango("SELECT a,b,c FROM mytable WHERE d=1.525");
+    assert.deepEqual(q, { fields: ['a','b','c'], selector: { d: {'$eq': 1.525}} });
+  });
+
+  it('should handle bools', function() {
+    var q = sqltomango("SELECT a,b,c FROM mytable WHERE d=true");
+    assert.deepEqual(q, { fields: ['a','b','c'], selector: { d: {'$eq': true}} });
   });
 
   it('should handle WHERE = with dot notation', function() {
@@ -60,17 +75,17 @@ describe('parsing tests', function() {
 
   it('should handle WHERE x AND y', function() {
     var q = sqltomango("SELECT a,b,c FROM mytable WHERE d <= '1' AND e = '2'");
-    assert.deepEqual(q, { fields: ['a','b','c'], selector: { '$and': { d: {'$lte': '1'}, e: {'$eq' : '2'} }}});
+    assert.deepEqual(q, { fields: ['a','b','c'], selector: { '$and': [ { d: {'$lte': '1'}}, {e: {'$eq' : '2'}}] }});
   });
 
   it('should handle WHERE x OR y', function() {
     var q = sqltomango("SELECT a,b,c FROM mytable WHERE d <= '1' OR e = '2'");
-    assert.deepEqual(q, { fields: ['a','b','c'], selector: { '$or': { d: {'$lte': '1'}, e: {'$eq' : '2'} }}});
+    assert.deepEqual(q, { fields: ['a','b','c'], selector: { '$or': [ {d: {'$lte': '1'}}, {e: {'$eq' : '2'}} ] }});
   });
 
   it('should handle WHERE x OR (y AND z)', function() {
     var q = sqltomango("SELECT a,b,c FROM mytable WHERE d <= '1' OR (e = '2' AND f = '3')");
-    assert.deepEqual(q, { fields: ['a','b','c'], selector: { '$or': { d: {'$lte': '1'}, '$and': { e: {'$eq' : '2'}, f: {'$eq' : '3'} }}}});
+    assert.deepEqual(q, { fields: ['a','b','c'], selector: { '$or': [ { d: {'$lte': '1'}}, {'$and': [ {e: {'$eq' : '2'}}, {f: {'$eq' : '3'}} ]} ] }});
   });
 
   it('should handle ORDER BY e ASC', function() {
