@@ -30,7 +30,6 @@ It returns an object which can be used to to query a CouchDB or Cloudant databas
 
 ```js
 {
- "fields": null,
  "selector": {
   "owner": {
    "$eq": "glynn"
