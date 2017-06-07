@@ -1,11 +1,16 @@
 // SQL parser library
-var sqlparser = require('sql-parser');
+const sqlparser = require('sql-parser');
 
 // simplifies value objects to allow dot notation for accessing objects e.g. person.name
 // strips back ticks so that `person.name` becomes person.name
-var simplify = function(obj) {
-  return obj.toString().replace(/^[`']/,'').replace(/[`']$/,'');
-}
+const simplify = function(obj) {
+  const str = obj.toString().replace(/^[`']/,'').replace(/[`']$/,'');
+  // if it contains backticks, it's too complex for Mango e.g. COS(`x`)
+  if (str.match(/`/)) {
+    throw new Error(str + ' not supported');
+  }
+  return str;
+};
 
 
 // recursive function that dives into the tree of parsed WHERE clauses and creates
@@ -13,7 +18,7 @@ var simplify = function(obj) {
 // like AND and OR, making the JSON tree deeper at this point.
 // s - the selector object to be added to
 // condition - the parsed SQL condition to be converted.
-var selector = function(s, condition) {
+const selector = function(s, condition) {
 
   switch (condition.operation.toUpperCase()) {
     case '=':
@@ -21,7 +26,7 @@ var selector = function(s, condition) {
     break;
 
     case '!=':
-      s[simplify(condition.left)] = { '$not' : simplify(condition.right) };
+      s[simplify(condition.left)] = { '$ne' : simplify(condition.right) };
     break;
 
     case '<':
@@ -71,7 +76,12 @@ var selector = function(s, condition) {
 
 
 // parase an SQL query and return the equivalent Cloudant QUERY
-var parse = function(query) {
+const parse = function(query) {
+
+  // throw on non string
+  if (typeof query !== 'string') {
+    throw(new Error('query must be a string'));
+  }
 
   // empty cloudant query object
   var obj = {
@@ -79,7 +89,7 @@ var parse = function(query) {
   };
 
   // parse the SQL into a tree
-  var tree = sqlparser.parse(query);
+  const tree = sqlparser.parse(query);
 
   // look for exceptions
   if (tree.distinct) {
@@ -99,7 +109,14 @@ var parse = function(query) {
   if (tree.fields && tree.fields.toString() !== '*') {
     obj.fields = [];
     for(var i in tree.fields) {
-      var field = tree.fields[i];
+      const field = tree.fields[i];
+      
+      // aliases not supported
+      if (field.name !== null) {
+        throw new Error('alias ' + field.toString() + ' not supported');
+      }
+
+      // complex things in the field list not supported
       if (!field.field.value) {
         throw new Error(field.toString() + ' not supported');
       }
@@ -111,17 +128,19 @@ var parse = function(query) {
   }
 
   // extract where clauses by recursively walking the tree
-  obj.selector = selector({}, tree.where.conditions);
+  if (tree.where) {
+    obj.selector = selector({}, tree.where.conditions);
+  }
 
   // extract order by and convert to mango syntax
   if (tree.order && tree.order.orderings) {
     obj.sort = [];
     var lastorder = null;
     for(var i in tree.order.orderings) {
-      var t = tree.order.orderings[i];
+      const t = tree.order.orderings[i];
       var s = {
       }; 
-      s[t.value.value] = (t.direction === 'ASC') ? 'asc' : 'desc';
+      s[t.value.value] = (t.direction.toUpperCase() === 'DESC') ? 'desc' : 'asc';
       if (lastorder != null && s[t.value.value] != lastorder) {
         throw new Error('ORDER BY must be either all ASC or all DESC, not mixed')
       }
