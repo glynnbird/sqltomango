@@ -1,10 +1,11 @@
 {
   "name": "sqltomango",
-  "version": "1.1.0",
+  "version": "1.2.0",
   "description": "Converts SQL statements into CouchDB Mango (Cloudant Query) JSON queries",
-  "main": "index.js",
+  "main": "dist/sqltomango.js",
   "scripts": {
-    "test": "./node_modules/mocha/bin/mocha"
+    "test": "./node_modules/mocha/bin/mocha",
+    "build": "./node_modules/browserify/bin/cmd.js -t -g uglifyify index.js --standalone sqltomango | ./node_modules/uglify-js/bin/uglifyjs > browser.js"
   },
   "repository": {
     "type": "git",
@@ -27,6 +28,9 @@
     "sql-parser": "^0.5.0"
   },
   "devDependencies": {
-    "mocha": "^3.4.2"
+    "browserify": "^14.4.0",
+    "mocha": "^3.4.2",
+    "uglify-js": "^3.0.15",
+    "uglifyify": "^3.0.4"
   }
 }

@@ -1,10 +1,10 @@
 // SQL parser library
-const sqlparser = require('sql-parser');
+var sqlparser = require('sql-parser');
 
 // simplifies value objects to allow dot notation for accessing objects e.g. person.name
 // strips back ticks so that `person.name` becomes person.name
-const simplify = function(obj) {
-  const str = obj.toString().replace(/^[`']/,'').replace(/[`']$/,'');
+var simplify = function(obj) {
+  var str = obj.toString().replace(/^[`']/,'').replace(/[`']$/,'');
   // if it contains backticks, it's too complex for Mango e.g. COS(`x`)
   if (str.match(/`/)) {
     throw new Error(str + ' not supported');
@@ -16,7 +16,7 @@ const simplify = function(obj) {
 // e.g. "2.5" --> 2.5
 //       "2"  --> 2
 //      "true" --> true etc
-const parameterise = function(obj) {
+var parameterise = function(obj) {
   var str = simplify(obj);
   var u = str.toUpperCase();
 
@@ -41,8 +41,9 @@ const parameterise = function(obj) {
 // like AND and OR, making the JSON tree deeper at this point.
 // s - the selector object to be added to
 // condition - the parsed SQL condition to be converted.
-const selector = function(s, condition) {
-
+var selector = function(s, condition) {
+  var op = null;
+  
   switch (condition.operation.toUpperCase()) {
     case '=':
       s[simplify(condition.left)] = { '$eq' : parameterise(condition.right) };
@@ -77,14 +78,14 @@ const selector = function(s, condition) {
     break;
 
     case 'AND':
-      var op = '$and';
+      op = '$and';
       s[op] = [];
       s[op].push(selector({}, condition.left));
       s[op].push(selector({}, condition.right));      
     break;
 
     case 'OR':
-      var op = '$or';
+      op = '$or';
       s[op] = [];
       s[op].push(selector({}, condition.left));
       s[op].push(selector({}, condition.right));      
@@ -99,7 +100,7 @@ const selector = function(s, condition) {
 
 
 // parase an SQL query and return the equivalent Cloudant QUERY
-const parse = function(query) {
+var parse = function(query) {
 
   // throw on non string
   if (typeof query !== 'string') {
@@ -110,7 +111,7 @@ const parse = function(query) {
   var obj = { };
 
   // parse the SQL into a tree
-  const tree = sqlparser.parse(query);
+  var tree = sqlparser.parse(query);
 
   // look for exceptions
   if (tree.distinct) {
@@ -130,7 +131,7 @@ const parse = function(query) {
   if (tree.fields && tree.fields.toString() !== '*') {
     obj.fields = [];
     for(var i in tree.fields) {
-      const field = tree.fields[i];
+      var field = tree.fields[i];
       
       // aliases not supported
       if (field.name !== null) {
@@ -156,7 +157,7 @@ const parse = function(query) {
     obj.sort = [];
     var lastorder = null;
     for(var i in tree.order.orderings) {
-      const t = tree.order.orderings[i];
+      var t = tree.order.orderings[i];
       var s = {
       }; 
       s[t.value.value] = (t.direction.toUpperCase() === 'DESC') ? 'desc' : 'asc';
@@ -179,4 +180,6 @@ const parse = function(query) {
   return obj;
 };
 
-module.exports = parse;
+module.exports = {
+  parse: parse
+};

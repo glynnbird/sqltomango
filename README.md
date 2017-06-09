@@ -15,7 +15,7 @@ npm install --save sqltomango
 Import the library into your code:
 
 ```js
-const sqltomango = require('sqltomango');
+var sqltomango = require('sqltomango');
 ```
 
 ## Usage
@@ -23,7 +23,7 @@ const sqltomango = require('sqltomango');
 The *sqltomango* library is a single function that accepts one argument - a string containing the SQL you wish to convert to a query object:
 
 ```js
-var q = sqltomango("SELECT * FROM dogs WHERE owner = 'glynn'")
+var q = sqltomango.parse("SELECT * FROM dogs WHERE owner = 'glynn'")
 ```
 
 It returns an object which can be used to to query a CouchDB or Cloudant database:
@@ -41,7 +41,7 @@ It returns an object which can be used to to query a CouchDB or Cloudant databas
 This works for more complex queries too:
 
 ```js
-var q = sqltomango("SELECT _id, age, breed FROM dogs WHERE owner = 'glynn' OR (name='towser' AND colour='white') ORDER BY age DESC LIMIT 500,1500")
+var q = sqltomango.parse("SELECT _id, age, breed FROM dogs WHERE owner = 'glynn' OR (name='towser' AND colour='white') ORDER BY age DESC LIMIT 500,1500")
 // produces...
 {
  "fields": [
@@ -90,3 +90,17 @@ An exception is thrown if the SQL does not parse or contains SQL features not su
 - SUM/COUNT/AVG/DISTINCT
 - UNION
 - JOIN
+
+## Using in a browser
+
+In the GitHub repo, you will find 
+
+- index.js - the original source code
+- browser.js - an auto-generated form of the code that works in a web browser.
+
+```html
+<script src="browser.js"></script>
+sqltomango.parse("SELECT * FROM mytable WHERE x > 2");
+</script>
+```
+
