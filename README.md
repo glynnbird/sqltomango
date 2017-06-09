@@ -95,8 +95,8 @@ An exception is thrown if the SQL does not parse or contains SQL features not su
 
 In the GitHub repo, you will find 
 
-- index.js - the original source code
-- browser.js - an auto-generated form of the code that works in a web browser.
+- src/sqltomango.js - the original source code
+- dist/sqltomango.js - an auto-generated form of the code that works in a web browser or in Node.js
 
 ```html
 <script src="browser.js"></script>
