@@ -1,6 +1,6 @@
 # sqltomango
 
-[![Build Status](https://travis-ci.org/glynnbird/sqltomango.svg?branch=master)](https://travis-ci.org/glynnbird/sqltomango) [![npm version](https://badge.fury.io/js/sqltomango.svg)](https://badge.fury.io/js/sqltomango)
+[![Build Status](https://travis-ci.org/ibm-cds-labs/sqltomango.svg?branch=master)](https://travis-ci.org/ibm-cds-labs/sqltomango) [![npm version](https://badge.fury.io/js/sqltomango.svg)](https://badge.fury.io/js/sqltomango)
 
 A simple Node.js library that converts Structured Query Language (SQL) into CouchDB Mango / Cloudant Query JSON objects. Mango is the code name for the query language used in Apache CouchDB and IBM Cloudant. It uses JSON to represent queries. This tool converts SQL strings into Mango objects, to allow users to interact with CouchDB/Cloudant database with SQL queries.
 

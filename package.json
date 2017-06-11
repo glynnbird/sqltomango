@@ -9,7 +9,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/glynnbird/sqltomango.git"
+    "url": "git+https://github.com/ibm-cds-labs/sqltomango.git"
   },
   "keywords": [
     "cloudant",
@@ -21,9 +21,9 @@
   "author": "Glynn Bird <glynn.bird@gmail.com>",
   "license": "Apache-2.0",
   "bugs": {
-    "url": "https://github.com/glynnbird/sqltomango/issues"
+    "url": "https://github.com/ibm-cds-labs/sqltomango/issues"
   },
-  "homepage": "https://github.com/glynnbird/sqltomango#readme",
+  "homepage": "https://github.com/ibm-cds-labs/sqltomango#readme",
   "dependencies": {
     "sql-parser": "^0.5.0"
   },
