@@ -2,7 +2,7 @@
 const assert = require('assert');
 
 // run the tests on the original and browser-compatible code
-['../src/sqltomango.js', '../dist/sqltomango.js'].forEach(function(r) {
+['..'].forEach(function(r) {
 
   var sqltomango = require(r);
 

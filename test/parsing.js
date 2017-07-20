@@ -1,7 +1,7 @@
 const sqltomango = require('..');
 const assert = require('assert');
 
-['../src/sqltomango.js', '../dist/sqltomango.js'].forEach(function(r) {
+['..'].forEach(function(r) {
   describe('parsing tests - ' + r, function() {
 
     it('should parse where-free query', function() {
