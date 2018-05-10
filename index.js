@@ -1,5 +1,5 @@
 // SQL parser library
-var sqlparser = require('sql-parser');
+var sqlparser = require('./sqlparser/index.js');
 
 // simplifies value objects to allow dot notation for accessing objects e.g. person.name
 // strips back ticks so that `person.name` becomes person.name

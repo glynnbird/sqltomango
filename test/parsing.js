@@ -69,6 +69,11 @@ const assert = require('assert');
       assert.deepEqual(q, { fields: ['a','b','c'], selector: { d: {'$lt': '1'}} });
     });
 
+    it('should handle negative numbers', function() {
+      var q = sqltomango.parse("SELECT a,b,c FROM mytable WHERE d < '-1'");
+      assert.deepEqual(q, { fields: ['a','b','c'], selector: { d: {'$lt': -1}} });
+    });
+
     it('should handle WHERE <=', function() {
       var q = sqltomango.parse("SELECT a,b,c FROM mytable WHERE d <= '1'");
       assert.deepEqual(q, { fields: ['a','b','c'], selector: { d: {'$lte': '1'}} });
