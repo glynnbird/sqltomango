@@ -91,16 +91,3 @@ An exception is thrown if the SQL does not parse or contains SQL features not su
 - UNION
 - JOIN
 
-## Using in a browser
-
-In the GitHub repo, you will find 
-
-- src/sqltomango.js - the original source code
-- dist/sqltomango.js - an auto-generated form of the code that works in a web browser or in Node.js
-
-```html
-<script src="browser.js"></script>
-sqltomango.parse("SELECT * FROM mytable WHERE x > 2");
-</script>
-```
-
