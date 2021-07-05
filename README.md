@@ -30,11 +30,12 @@ It returns an object which can be used to to query a CouchDB or Cloudant databas
 
 ```js
 {
- "selector": {
-  "owner": {
-   "$eq": "glynn"
+  "table": "dogs",
+  "selector": {
+    "owner": {
+    "$eq": "glynn"
+    }
   }
- }
 }
 ```
 
@@ -44,41 +45,42 @@ This works for more complex queries too:
 var q = sqltomango.parse("SELECT _id, age, breed FROM dogs WHERE owner = 'glynn' OR (name='towser' AND colour='white') ORDER BY age DESC LIMIT 500,1500")
 // produces...
 {
- "fields": [
-  "_id",
-  "age",
-  "breed"
- ],
- "selector": {
-  "$or": [
-   {
-    "owner": {
-     "$eq": "glynn"
-    }
-   },
-   {
-    "$and": [
-     {
-      "name": {
-       "$eq": "towser"
+  "table": "dogs",
+  "fields": [
+    "_id",
+    "age",
+    "breed"
+  ],
+  "selector": {
+    "$or": [
+      {
+        "owner": {
+          "$eq": "glynn"
+        }
+      },
+      {
+        "$and": [
+          {
+            "name": {
+              "$eq": "towser"
+            }
+          },
+          {
+            "colour": {
+              "$eq": "white"
+            }
+          }
+        ]
       }
-     },
-     {
-      "colour": {
-       "$eq": "white"
-      }
-     }
     ]
-   }
-  ]
- },
- "sort": [
-  {
-   "age": "desc"
-  }
- ],
- "limit": 1500,
- "skip": 500
+  },
+  "sort": [
+    {
+      "age": "desc"
+    }
+  ],
+  "limit": 1500,
+  "skip": 500
 }
 ```
 
