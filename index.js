@@ -21,7 +21,7 @@ const parameterise = function (obj) {
   const u = str.toUpperCase()
 
   // if the thing is numeric, parse as number
-  if (str.match(/^[-0-9.]+$/)) {
+  if (str.match(/^-?[0-9.]+$/)) {
     if (str.match(/\./)) {
       return parseFloat(str)
     } else {
