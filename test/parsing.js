@@ -33,6 +33,11 @@ const assert = require('assert');
       assert.deepEqual(q, { table: 'mytable', fields: ['a', 'b', 'c'], selector: { d: { $eq: 1 } } })
     })
 
+    it('should respect quotes', function () {
+      const q = sqltomango.parse("SELECT a,b,c FROM mytable WHERE d='1'")
+      assert.deepEqual(q, { table: 'mytable', fields: ['a', 'b', 'c'], selector: { d: { $eq: '1' } } })
+    })
+
     it('should handle dates', function () {
       const q = sqltomango.parse("SELECT a,b,c FROM mytable WHERE d='2018-01-02'")
       assert.deepEqual(q, { table: 'mytable', fields: ['a', 'b', 'c'], selector: { d: { $eq: '2018-01-02' } } })

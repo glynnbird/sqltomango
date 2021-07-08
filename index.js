@@ -20,6 +20,11 @@ const parameterise = function (obj) {
   const str = simplify(obj)
   const u = str.toUpperCase()
 
+  // if the field is quoted by single or double quotes
+  if (obj.quoteType && ['\'', '"'].includes(obj.quoteType)) {
+    return str
+  }
+
   // if the thing is numeric, parse as number
   if (str.match(/^-?[0-9.]+$/)) {
     if (str.match(/\./)) {
