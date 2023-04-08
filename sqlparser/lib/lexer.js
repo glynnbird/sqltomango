@@ -204,7 +204,7 @@
 
     SQL_SORT_ORDERS = ['ASC', 'DESC']
 
-    SQL_OPERATORS = ['=', '!=', '>=', '>', '<=', '<>', '<', 'LIKE', 'IS NOT', 'IS']
+    SQL_OPERATORS = ['=', '!=', '>=', '>', '<=', '<>', '<', 'LIKE', 'RLIKE', 'REGEXP', 'IS NOT', 'IS']
 
     SUB_SELECT_OP = ['IN', 'NOT IN', 'ANY', 'ALL', 'SOME']
 
