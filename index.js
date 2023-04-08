@@ -73,6 +73,10 @@ const selector = function (s, condition) {
       s[simplify(condition.left)] = { $gte: parameterise(condition.right) }
       break
 
+    case 'RLIKE': case 'REGEXP':
+      s[simplify(condition.left)] = { $regex: parameterise(condition.right) }
+      break
+
     case 'IN':
       s[simplify(condition.left)] = { $in: condition.right.value.map(function (v) { return v.value }) }
       break
