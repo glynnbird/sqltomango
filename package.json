@@ -1,11 +1,11 @@
 {
   "name": "sqltomango",
-  "version": "1.3.3",
+  "version": "2.0.0",
+  "type": "module",
   "description": "Converts SQL statements into CouchDB Mango (Cloudant Query) JSON queries",
   "main": "index.js",
   "scripts": {
-    "test": "npx mocha",
-    "standard": "standard --fix index.js"
+    "test": "node --test test/*.js"
   },
   "repository": {
     "type": "git",
@@ -24,11 +24,7 @@
     "url": "https://github.com/ibm-cds-labs/sqltomango/issues"
   },
   "homepage": "https://github.com/ibm-cds-labs/sqltomango#readme",
-  "devDependencies": {
-    "mocha": "^10.0.0",
-    "standard": "^17.0.0"
-  },
-  "standard": {
-    "env": [ "mocha" ]
+  "dependencies": {
+    "node-sql-parser": "^5.3.12"
   }
 }
